@@ -1,12 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Line } from 'react-chartjs-2';
-import io from 'socket.io-client';
+import { socket } from '../lib/socket';
 
-const socket = io(process.env.REACT_APP_API_URL, {
-  transports: ['websocket'],
-});
-
-const BarChart = () => {
+const LineChart = () => {
   const [dataTemperature, setDataTemperature] = useState([]);
   const [dataDescription, setDataDescription] = useState([]);
   const [chartData, setChartData] = useState({});
@@ -40,21 +36,17 @@ const BarChart = () => {
     }
   }, [dataDescription, dataTemperature]);
 
+  const optionsConfig = {
+    responsive: true,
+    animation: {
+      animateScale: true,
+    },
+  };
   return (
     <div>
-      <Line
-        data={chartData}
-        height={500}
-        width={500}
-        options={{
-          responsive: true,
-          animation: {
-            animateScale: true,
-          },
-        }}
-      />
+      <Line data={chartData} height={500} width={500} options={optionsConfig} />
     </div>
   );
 };
 
-export default BarChart;
+export default LineChart;
